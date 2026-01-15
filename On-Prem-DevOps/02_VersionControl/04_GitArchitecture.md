@@ -88,9 +88,7 @@ Now the file moves from **staging area → repository**.
 
 ## Git Architecture Flow (Text Diagram)
 
-![Image](https://miro.medium.com/1%2AdiRLm1S5hkVoh5qeArND0Q.png)
 
-![Image](https://i.sstatic.net/cZkcV.jpg)
 
 ```
 Working Tree
