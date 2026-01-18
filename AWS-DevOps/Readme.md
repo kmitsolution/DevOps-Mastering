@@ -1,5 +1,5 @@
 
-## AWS DevOps Course Outline (Certification-Focused)
+## AWS DevOps Course Outline ( AWS Certified DevOps Engineer – Professional (DOP-C02) Certification-Focused)
 
 ### 1. DevOps Fundamentals & AWS Overview
 
