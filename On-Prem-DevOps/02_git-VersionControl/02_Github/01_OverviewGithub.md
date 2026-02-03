@@ -2,6 +2,9 @@
 
 A **remote repository** is a **central location** where your Git code is stored so that **multiple developers can collaborate**.
 
+<img width="721" height="419" alt="image" src="https://github.com/user-attachments/assets/3d82d7f5-2ddd-48cd-abcc-b119fa16010f" />
+
+
 
 ### Key points
 
