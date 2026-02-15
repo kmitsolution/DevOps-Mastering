@@ -1,4 +1,3 @@
----
 
 ### 1. A DevOps engineer is designing a system to restrict EC2 access to specific roles only. What is the best enforcement method?
 
