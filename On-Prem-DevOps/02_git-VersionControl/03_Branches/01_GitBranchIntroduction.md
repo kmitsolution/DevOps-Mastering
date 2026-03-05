@@ -23,6 +23,8 @@ Branching is important because it allows:
 Without branches, every developer would push code directly to **main**, which could break the project.
 
 ---
+<img width="500" height="536" alt="image" src="https://github.com/user-attachments/assets/5e661d49-9a5b-487b-8d24-63b3283c9bf8" />
+
 
 ### 3️⃣ Example Project: `kmitcourses`
 
