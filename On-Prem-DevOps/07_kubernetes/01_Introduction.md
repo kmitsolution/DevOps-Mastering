@@ -253,5 +253,3 @@ Features:
 | Cloud Kubernetes  | AKS, EKS, GKE     |
 
 ---
-
-If you want, I can also help you create a **very clean YouTube lecture script + slide explanation for this diagram (perfect for a DevOps course lecture)**.
