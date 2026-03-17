@@ -1,359 +1,327 @@
-Below is a **clear DevOps training–style explanation of Pod Affinity** that you can use in your **Kubernetes lecture notes**.
-
----
-
-# Kubernetes **Pod Affinity**
+# Kubernetes **Taints and Tolerations**
 
 ## 1. Introduction
 
-**Pod Affinity** is used to control **which pods should run close to other pods**.
+In Kubernetes, **Taints and Tolerations** work together to control **which pods can run on which nodes**.
 
-Instead of selecting **nodes**, Pod Affinity selects **other pods**.
+Earlier scheduling methods:
 
-Meaning:
+* **nodeSelector**
+* **NodeAffinity**
+* **PodAffinity**
 
+These methods **attract pods to nodes**.
+
+But **Taints do the opposite**.
+
+Taints **repel pods from nodes** unless the pod has a matching **toleration**.
+
+Concept:
+
+```id="9wblc3"
+Node → Taint → Blocks pods
+Pod → Toleration → Allowed to run
 ```
-Run this pod on a node where another specific pod is already running
-```
-
-Example scenario:
-
-```
-App Pod → run close to Database Pod
-```
-
-This helps reduce:
-
-* network latency
-* communication delays
 
 ---
 
-# 2. Why Pod Affinity is Useful
+# 2. Real World Example
 
-Pod Affinity is beneficial in scenarios like:
+Suppose you have nodes dedicated for:
 
-### 1. Microservices Communication
+* GPU workloads
+* Production workloads
+* Database workloads
+
+You do not want **normal applications** to run on those nodes.
+
+So you apply a **taint on the node**.
 
 Example:
 
-```
-Frontend Pod → Backend Pod
+```id="rvz4to"
+gpu=true:NoSchedule
 ```
 
-To reduce network calls, both pods can run on the **same node**.
+Now only pods with matching **tolerations** can run there.
 
 ---
 
-### 2. Database Applications
+# 3. What is a Taint?
+
+A **Taint** is applied to a node to **restrict pods from scheduling on that node**.
+
+Structure:
+
+```id="e1o5qt"
+key=value:effect
+```
 
 Example:
 
-```
-Application Pod
-Database Pod
-```
-
-Keeping them together improves performance.
-
----
-
-### 3. High Performance Workloads
-
-When pods need **fast communication**, they should run on the **same node or zone**.
-
----
-
-# 3. Pod Affinity Types
-
-Like NodeAffinity, PodAffinity has **two types**.
-
-| Type                                            | Meaning   |
-| ----------------------------------------------- | --------- |
-| requiredDuringSchedulingIgnoredDuringExecution  | Hard rule |
-| preferredDuringSchedulingIgnoredDuringExecution | Soft rule |
-
----
-
-# 4. Hard Pod Affinity
-
-## requiredDuringSchedulingIgnoredDuringExecution
-
-This means:
-
-```
-Pod MUST run on nodes where another specific pod exists
-```
-
-If no matching pod exists:
-
-```
-Pod will remain Pending
-```
-
----
-
-# 5. Example: Pod Affinity
-
-Suppose we have:
-
-```
-backend-pod
-```
-
-Now we want:
-
-```
-frontend-pod
-```
-
-to run **on the same node as backend-pod**.
-
----
-
-### Backend Pod
-
-```yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: backend-pod
-  labels:
-    app: backend
-spec:
-  containers:
-  - name: backend
-    image: nginx
-```
-
----
-
-### Frontend Pod using Pod Affinity
-
-```yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: frontend-pod
-spec:
-  affinity:
-    podAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-      - labelSelector:
-          matchExpressions:
-          - key: app
-            operator: In
-            values:
-            - backend
-        topologyKey: kubernetes.io/hostname
-  containers:
-  - name: frontend
-    image: nginx
-```
-
----
-
-# 6. Understanding the Important Fields
-
-## labelSelector
-
-This identifies **which pods we want to match**.
-
-Example:
-
-```yaml
-labelSelector:
-  matchExpressions:
-  - key: app
-    operator: In
-    values:
-    - backend
+```id="09ppbh"
+env=prod:NoSchedule
 ```
 
 Meaning:
 
-```
-Look for pods with label app=backend
+```id="5ayoj6"
+Pods cannot run on this node unless they tolerate this taint
 ```
 
 ---
 
-## topologyKey
+# 4. What is a Toleration?
 
-This defines **where pods should be placed together**.
+A **Toleration** is added to a pod so it can **run on a tainted node**.
 
 Example:
 
-```yaml
-topologyKey: kubernetes.io/hostname
+```id="g9f80u"
+tolerations:
+- key: "env"
+  operator: "Equal"
+  value: "prod"
+  effect: "NoSchedule"
+```
+
+This means the pod **can run on nodes tainted with env=prod**.
+
+---
+
+# 5. Types of Taint Effects
+
+Kubernetes supports **three taint effects**.
+
+| Effect           | Meaning                                    |
+| ---------------- | ------------------------------------------ |
+| NoSchedule       | Pod will NOT be scheduled on the node      |
+| PreferNoSchedule | Try to avoid scheduling                    |
+| NoExecute        | Remove running pods if they don't tolerate |
+
+---
+
+# 6. NoSchedule
+
+This prevents new pods from running.
+
+Example taint:
+
+```bash id="chhgpp"
+kubectl taint nodes worker1 env=prod:NoSchedule
 ```
 
 Meaning:
 
-```
-Run pods on the same node
-```
-
-Other examples:
-
-```
-topology.kubernetes.io/zone
-topology.kubernetes.io/region
+```id="iq29hx"
+No pod can run on worker1 unless it tolerates env=prod
 ```
 
 ---
 
-# 7. Soft Pod Affinity
+# 7. PreferNoSchedule
 
-## preferredDuringSchedulingIgnoredDuringExecution
+This is a **soft rule**.
 
-This means:
+Scheduler tries to avoid placing pods on the node.
 
-```
-Prefer to run near other pods, but not mandatory
-```
+Example:
 
-If matching pods exist:
-
-```
-Scheduler places pod nearby
+```bash id="yrx13o"
+kubectl taint nodes worker1 env=prod:PreferNoSchedule
 ```
 
-If not:
+Pods may still run there if no other nodes are available.
 
+---
+
+# 8. NoExecute
+
+This is the most strict rule.
+
+Example:
+
+```bash id="c07fgi"
+kubectl taint nodes worker1 env=prod:NoExecute
 ```
-Scheduler runs pod anywhere
+
+Meaning:
+
+* New pods cannot run
+* Existing pods will be **evicted**
+
+Unless they tolerate the taint.
+
+---
+
+# 9. Add a Taint to Node
+
+Example:
+
+```bash id="60x5rc"
+kubectl taint nodes worker1 env=prod:NoSchedule
+```
+
+Verify taints:
+
+```bash id="h7gsgo"
+kubectl describe node worker1
+```
+
+Look for:
+
+```id="45okdy"
+Taints:
+env=prod:NoSchedule
 ```
 
 ---
 
-# 8. Example: Preferred Pod Affinity
+# 10. Pod with Toleration Example
 
-```yaml
+### taint-pod.yaml
+
+```yaml id="48tr7a"
 apiVersion: v1
 kind: Pod
 metadata:
-  name: frontend-pod
+  name: nginx-taint
 spec:
-  affinity:
-    podAffinity:
-      preferredDuringSchedulingIgnoredDuringExecution:
-      - weight: 100
-        podAffinityTerm:
-          labelSelector:
-            matchExpressions:
-            - key: app
-              operator: In
-              values:
-              - backend
-          topologyKey: kubernetes.io/hostname
   containers:
   - name: nginx
     image: nginx
+  tolerations:
+  - key: "env"
+    operator: "Equal"
+    value: "prod"
+    effect: "NoSchedule"
 ```
 
-Meaning:
+This pod can run on nodes with taint:
 
-```
-Prefer node where backend pod exists
-```
-
-But if none exists:
-
-```
-Pod still runs
-```
-
----
-
-# 9. Example Workflow
-
-```
-Create Backend Pod
-       ↓
-Create Frontend Pod with Pod Affinity
-       ↓
-Scheduler finds node with backend pod
-       ↓
-Frontend Pod scheduled on same node
+```id="4hbvjy"
+env=prod:NoSchedule
 ```
 
 ---
 
-# 10. Verify Pod Placement
+# 11. Create the Pod
 
-Check where pods are running:
+```bash id="6b2gjq"
+kubectl create -f taint-pod.yaml
+```
 
-```bash
+---
+
+# 12. Verify Pod Placement
+
+```bash id="qpacn0"
 kubectl get pods -o wide
 ```
 
 Example output:
 
+```id="df8cfq"
+NAME         READY   STATUS   NODE
+nginx-taint  1/1     Running  worker1
 ```
-NAME           NODE
-backend-pod    worker1
-frontend-pod   worker1
-```
-
-Both pods are on the **same node**.
 
 ---
 
-# 11. Pod Affinity vs Node Affinity
+# 13. Remove Taint from Node
 
-| Feature           | Node Affinity          | Pod Affinity          |
-| ----------------- | ---------------------- | --------------------- |
-| Based on          | Node labels            | Pod labels            |
-| Scheduling target | Node                   | Pod location          |
-| Use case          | Hardware / environment | Application proximity |
+To remove taint:
+
+```bash id="fnolxg"
+kubectl taint nodes worker1 env=prod:NoSchedule-
+```
+
+Notice the **dash at the end**.
 
 ---
 
-# 12. Pod Anti-Affinity
+# 14. Common Real-World Use Cases
 
-Pod Anti-Affinity is the opposite.
+### 1. Master Node Protection
+
+Master nodes are tainted by default.
 
 Example:
 
-```
-Do NOT schedule pods together
+```id="gd8h2s"
+node-role.kubernetes.io/control-plane:NoSchedule
 ```
 
-Useful for:
+This prevents normal workloads from running on master nodes.
 
-* high availability
-* spreading pods across nodes
+---
+
+### 2. Dedicated Nodes
 
 Example:
 
+```id="sywzpd"
+database nodes
+gpu nodes
 ```
-Two replicas should NOT run on the same node
+
+Only specific pods can run there.
+
+---
+
+### 3. Maintenance Mode
+
+Administrators can temporarily taint nodes during maintenance.
+
+---
+
+# 15. Taints vs NodeSelector
+
+| Feature          | NodeSelector | Taints    |
+| ---------------- | ------------ | --------- |
+| Scheduling style | Attraction   | Repulsion |
+| Based on         | Labels       | Taints    |
+| Pod control      | Simple       | Advanced  |
+
+---
+
+# 16. Scheduling Logic
+
+Kubernetes scheduling flow:
+
+```id="8ek1oc"
+NodeSelector
+      ↓
+NodeAffinity
+      ↓
+Taints & Tolerations
+      ↓
+Pod scheduled
 ```
 
 ---
 
-# 13. Summary
+# 17. Summary
 
-Pod Affinity allows Kubernetes to:
+Taints and Tolerations allow administrators to:
 
-* schedule pods **close to other pods**
-* improve **performance**
-* reduce **network latency**
+* reserve nodes
+* prevent unwanted workloads
+* control scheduling behavior
 
-Two main types:
+Important concepts:
 
+```id="6wx7zn"
+Taint → applied to nodes
+Toleration → applied to pods
 ```
-requiredDuringSchedulingIgnoredDuringExecution
-preferredDuringSchedulingIgnoredDuringExecution
-```
 
-Key components:
+Effects:
 
-```
-labelSelector
-matchExpressions
-topologyKey
+```id="9s2fcv"
+NoSchedule
+PreferNoSchedule
+NoExecute
 ```
 
 ---
