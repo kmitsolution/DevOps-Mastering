@@ -84,6 +84,8 @@ kubectl get secret argocd-initial-admin-secret -n argocd \
 
 ```bash
 argocd app list
+argocd account list
+argocd account update-password
 ```
 
 ---
