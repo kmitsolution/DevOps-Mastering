@@ -48,6 +48,160 @@ PVC → PV → Actual Storage
 ```
 
 ---
+## Access Modes in Persistent Volumes (PV)
+
+Access modes define **how a volume can be mounted by Pods** — basically:
+
+👉 **Who can use the volume and in what way (read/write)**
+
+---
+
+# Types of Access Modes
+
+Kubernetes supports mainly **3 access modes**:
+
+---
+
+## 1. ReadWriteOnce (RWO)
+
+### Meaning
+
+👉 Volume can be mounted as:
+
+* **Read + Write**
+* By **only one node at a time**
+
+---
+
+### Important Clarification
+
+* Multiple Pods can use it ✅
+* But **only if they are on the same node**
+
+---
+
+### Example Use Case
+
+* Databases (MySQL, PostgreSQL)
+* AWS EBS volumes (in EKS)
+
+---
+
+### Simple Understanding
+
+```text
+1 Node → Many Pods → Read/Write ✅  
+Multiple Nodes → Not allowed ❌
+```
+
+---
+
+## 2. ReadOnlyMany (ROX)
+
+### Meaning
+
+👉 Volume can be mounted as:
+
+* **Read-only**
+* By **multiple nodes**
+
+---
+
+### Key Points
+
+* No Pod can write ❌
+* All Pods can only read ✅
+
+---
+
+### Example Use Case
+
+* Shared configuration files
+* Static content (HTML, images)
+
+---
+
+### Simple Understanding
+
+```text
+Multiple Nodes → Read only ✅  
+Write → Not allowed ❌
+```
+
+---
+
+## 3. ReadWriteMany (RWX)
+
+### Meaning
+
+👉 Volume can be mounted as:
+
+* **Read + Write**
+* By **multiple nodes at the same time**
+
+---
+
+### Key Points
+
+* Fully shared storage
+* Multiple Pods across nodes can read/write
+
+---
+
+### Example Use Case
+
+* Shared file systems
+* NFS, EFS (AWS), GlusterFS
+
+---
+
+### Simple Understanding
+
+```text
+Multiple Nodes → Read/Write ✅
+```
+
+---
+
+
+# How It Fits in PVC
+
+When you create a PVC:
+
+```yaml
+accessModes:
+  - ReadWriteOnce
+```
+
+👉 Kubernetes:
+
+* Finds a PV that supports this mode
+* Binds PVC to that PV
+
+---
+
+# Summary Table
+
+| Access Mode | Nodes | Read | Write | Use Case       |
+| ----------- | ----- | ---- | ----- | -------------- |
+| RWO         | 1     | ✅    | ✅     | Databases      |
+| ROX         | Many  | ✅    | ❌     | Static content |
+| RWX         | Many  | ✅    | ✅     | Shared storage |
+
+---
+
+# Final Understanding
+
+* **RWO** → One node, read/write
+* **ROX** → Many nodes, read-only
+* **RWX** → Many nodes, read/write
+
+👉 Choosing the correct access mode depends on:
+
+* Your application needs
+* Your storage backend
+
+---
 
 # Case Study (Step-by-Step)
 
