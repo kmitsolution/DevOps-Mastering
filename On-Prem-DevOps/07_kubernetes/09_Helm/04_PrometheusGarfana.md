@@ -1,158 +1,124 @@
-##  Install Helm (Kubernetes Package Manager)
+Got it 👍 — you want **Prometheus + Grafana deployed in a custom namespace (`monitoring`)**. Here’s the correct and clean way to do it.
 
 ---
 
-# ❓ What is Helm?
-
-👉 **Helm** is a package manager for Kubernetes
-👉 It helps you install applications using **Helm charts**
-
-Example:
-
-* Prometheus
-* Grafana
-* NGINX
-
----
-
-# 🧠 Why Helm?
-
-* Simplifies deployments
-* Reusable configurations
-* Easy upgrades/rollbacks
-
----
-
-# 🛠️ Installation Methods
-
----
-
-# ✅ Method 1: Using Script (Recommended)
-
-👉 Works on most Linux systems
+# 🚀 1. Create Namespace
 
 ```bash
-curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+kubectl create namespace monitoring
 ```
 
 ---
 
-## ✔️ Verify Installation
-
-```bash
-helm version
-```
-
-👉 Output should show version info
-
----
-
-# ✅ Method 2: Manual Download
-
----
-
-## Step 1: Download Helm
-
-```bash
-curl -LO https://get.helm.sh/helm-v3.14.0-linux-amd64.tar.gz
-```
-
----
-
-## Step 2: Extract
-
-```bash
-tar -xvf helm-v3.14.0-linux-amd64.tar.gz
-```
-
----
-
-## Step 3: Move Binary
-
-```bash
-sudo mv linux-amd64/helm /usr/local/bin/helm
-```
-
----
-
-## Step 4: Verify
-
-```bash
-helm version
-```
-
----
-
-# ✅ Method 3: Using Package Manager (Ubuntu)
-
-```bash
-sudo apt update
-sudo apt install helm -y
-```
-
-👉 (May install older version)
-
----
-
-# ⚙️ Basic Setup After Installation
-
----
-
-## Add Helm Repository
+# 🔹 2. Add Helm Repo
 
 ```bash
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-```
-
----
-
-## Update Repos
-
-```bash
 helm repo update
 ```
 
 ---
 
-## Search Charts
+# 📦 3. Install in `monitoring` Namespace
 
 ```bash
-helm search repo prometheus
+helm install monitoring prometheus-community/kube-prometheus-stack -n monitoring
+```
+
+👉 This installs everything inside the **monitoring namespace**
+
+---
+
+# 🔍 4. Verify Installation
+
+```bash
+kubectl get pods -n monitoring
+```
+
+```bash
+kubectl get svc -n monitoring
 ```
 
 ---
 
-# 🚀 Test Helm Installation
-
-Install a sample app:
+# 🔐 5. Get Grafana Password
 
 ```bash
-helm install my-release prometheus-community/prometheus
+kubectl get secret -n monitoring monitoring-grafana -o jsonpath="{.data.admin-password}" | base64 --decode
 ```
 
 ---
 
-## Check
+# 🌐 6. Access Grafana
 
 ```bash
-helm list
+kubectl port-forward -n monitoring svc/monitoring-grafana 3000:80
+```
+
+Open:
+
+```
+http://localhost:3000
+```
+
+Login:
+
+* Username: **admin**
+* Password: (from above command)
+
+---
+
+# 📊 7. Access Prometheus
+
+```bash
+kubectl port-forward -n monitoring svc/monitoring-kube-prometheus-prometheus 9090
+```
+
+Open:
+
+```
+http://localhost:9090
 ```
 
 ---
 
-# 🧠 Important Concepts
+# ⚙️ 8. Optional: Use Custom values.yaml
 
-| Term       | Meaning                     |
-| ---------- | --------------------------- |
-| Chart      | Package (like app template) |
-| Release    | Installed instance of chart |
-| Repository | Collection of charts        |
+```bash
+cat <<EOF > monitor-values.yaml
+grafana:
+  service:
+    type: NodePort
+
+prometheus:
+  service:
+    type: NodePort
+EOF
+```
+
+Install/Upgrade:
+
+```bash
+helm upgrade --install monitoring prometheus-community/kube-prometheus-stack -n monitoring -f monitor-values.yaml
+```
 
 ---
 
-# 🧾 Interview Answer
+# 🧹 9. Uninstall
 
-> “Helm is a package manager for Kubernetes that allows you to deploy applications using reusable templates called charts.”
+```bash
+helm uninstall monitoring -n monitoring
+kubectl delete namespace monitoring
+```
+
+---
+
+# ✅ Summary
+
+* Namespace: **monitoring** ✔
+* Prometheus + Grafana installed ✔
+* Access via port-forward ✔
+* Custom values supported ✔
 
 ---
 
