@@ -31,7 +31,7 @@ Without branches, every developer would push code directly to **main**, which co
 Suppose we have a project called:
 
 ```
-kmitcourses
+first-demo-repo
 ```
 
 Two developers join the project:
@@ -58,7 +58,7 @@ Each developer works in their own branch.
 Step 1: Create project repository
 
 ```
-kmitcourses
+first-demo-repo
 ```
 
 Step 2: Default branch created
@@ -101,7 +101,7 @@ dev2  → main
 
 ```
                     GitHub Repository
-                        kmitcourses
+                        first-demo-repo
                               │
                               │
                             main
