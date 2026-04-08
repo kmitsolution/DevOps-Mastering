@@ -1,5 +1,3 @@
-Here’s a **clear, beginner-friendly + real-world explanation** of Pull Requests (PR) in GitHub, including **creation and merge conflict resolution** 👇
-
 ---
 
 # 🔁 What is a Pull Request (PR) in GitHub?
