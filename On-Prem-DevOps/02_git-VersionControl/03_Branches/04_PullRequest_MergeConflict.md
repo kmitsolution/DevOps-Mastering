@@ -1,9 +1,9 @@
----
+
 
 # 🔁 What is a Pull Request (PR) in GitHub?
 
 A **Pull Request (PR)** is a request to:
-👉 Merge changes from one branch → into another branch (usually `main`)
+ Merge changes from one branch → into another branch (usually `main`)
 
 ### 📌 Simple Definition:
 
