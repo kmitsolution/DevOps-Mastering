@@ -5,7 +5,7 @@ To copy a complete repository from <b> GitHub </b> to your local machine:
 ```bash
 git clone https://github.com/YOUR_USERNAME/kmit-project.git
 git branch -a
-git fetch origin
+git fetch origin # to get the update from remote repository like if a new branch and you want the update
 ```
 
 This command:
