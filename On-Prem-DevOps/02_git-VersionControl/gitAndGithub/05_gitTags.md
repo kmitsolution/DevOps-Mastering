@@ -119,7 +119,7 @@ git push origin --delete v1.0
 # Checkout a Tag
 
 ```bash
-git switch --detach v1.0
+git checkout v1.0
 ```
 
 This places you in a detached HEAD state at the tagged commit.
