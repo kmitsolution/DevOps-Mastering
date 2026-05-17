@@ -10,11 +10,12 @@ The project is available at [git-flow AVH Edition](https://github.com/petervande
 
 ## Windows
 1. Download the gizp file from https://sourceforge.net/projects/git-flow-avh-edition.mirror/files/
-2. Extract the Scripts: Open your downloaded Release 1.12.3.zip folder. Find the files inside named: git-flow,git-flow-init,git-flow-feature,git-flow-release,git-flow-hotfix
-3. Move to Git Folder: Open a separate File Explorer window, navigate to your computer's main Git path:textC:\Program Files\Git\usr\bin
-4. Paste: Copy those files out of the ZIP and paste them directly into that usr\bin folder
-5. Close the Terminal and Open a new terminal or command prompt
-6. Run git flow version 
+2. Extract the Scripts: Open your downloaded Release 1.12.3.zip folder.
+3.  Find the files inside named: git-flow,git-flow-init,git-flow-feature,git-flow-release,git-flow-hotfix
+4. Move to Git Folder: Open a separate File Explorer window, navigate to your computer's main Git path C:\Program Files\Git\usr\bin
+5. Paste: Copy those files out of the ZIP and paste them directly into that usr\bin folder
+6. Close the Terminal and Open a new terminal or command prompt
+7. Run git flow version 
 
 
 # Main Git Flow Commands
