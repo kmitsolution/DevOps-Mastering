@@ -1,4 +1,4 @@
-# Git Branching Strategy Explained
+# Git Branching Strategy
 
 A **Git branching strategy** is a set of rules that defines:
 
