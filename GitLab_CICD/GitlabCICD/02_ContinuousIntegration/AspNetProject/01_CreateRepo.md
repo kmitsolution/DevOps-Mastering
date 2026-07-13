@@ -417,26 +417,24 @@ unit_test:
   image: mcr.microsoft.com/dotnet/sdk:9.0
 
   before_script:
-    - dotnet tool install -g trx2junit
+    - dotnet tool install --global trx2junit
     - export PATH="$PATH:/root/.dotnet/tools"
 
   script:
-    - dotnet test
-      --logger:
-      "trx;LogFileName=test_results.trx"
-
-    - trx2junit **/*.trx
+    - dotnet test --logger "trx;LogFileName=test_results.trx"
+    - find . -name "*.trx"
+    - find . -name "*.trx" -exec trx2junit {} \;
 
   artifacts:
     when: always
 
     paths:
       - "**/*.trx"
+      - "**/*.xml"
 
     reports:
       junit:
-        - "**/*.xml"
-```
+        - "**/*.xml"```
 
 ---
 
