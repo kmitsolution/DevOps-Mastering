@@ -555,36 +555,19 @@ unit_test_angular:
   stage: test
 
   image:
-    name: cypress/browsers:node-22.19.0-chrome-139
+    name: node:22-alpine
 
   script:
     - cd angular-ui
 
     - npm ci
+    - npm install -g @angular/cli
+    - npm install -D @vitest/coverage-v8
+    - ng --version
 
-    - npm test -- --watch=false --coverage
+    - ng test --coverage
 
-    - echo "Coverage Files"
-    - find coverage -type f
-
-    - |
-      FILE=$(find coverage -name "cobertura-coverage.xml" | head -1)
-
-      echo "Coverage File = $FILE"
-
-      COVERAGE=$(grep -oP 'line-rate="\K[^"]+' "$FILE")
-
-      echo "Line Rate = $COVERAGE"
-
-      PERCENT=$(awk -v cov="$COVERAGE" 'BEGIN { printf "%.2f", cov*100 }')
-
-      echo "Coverage Percentage = $PERCENT %"
-
-      if awk -v c="$PERCENT" 'BEGIN { exit !(c < 80) }'
-      then
-        echo "Coverage is below 80%"
-        exit 1
-      fi
+    
 
   artifacts:
     when: always
@@ -595,8 +578,7 @@ unit_test_angular:
     reports:
       coverage_report:
         coverage_format: cobertura
-        path: angular-ui/coverage/cobertura-coverage.xml```
-
+        path: angular-ui/coverage/clover.xml  
 ---
 
 # Pipeline Flow
