@@ -1,4 +1,4 @@
-Absolutely. Let's pause the Operations & Runbooks module and learn **Alert Management from the basics**, using a very simple example first.
+
 
 # Alert Management — Simple Lesson 1
 
