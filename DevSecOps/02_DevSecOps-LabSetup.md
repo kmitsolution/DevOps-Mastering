@@ -336,7 +336,8 @@ unit_test:
 
     reports:
       junit:
-        - "**/*.xml"```
+        - "**/*.xml"
+```
 
 Commit:
 
