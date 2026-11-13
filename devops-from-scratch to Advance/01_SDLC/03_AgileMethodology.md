@@ -27,9 +27,6 @@ Agile is based on four key values:
 
 ## How Agile Works (High Level)
 
-![Image](https://relevant.software/media/2023/04/kOUxaSeEF8g8aeWm7vigkLvh1UwgLVvxd15kEJB9V144w9Xx4nt7rzaR8an8TSXS6KZ9Nz3-kaaPegtNdvBBLjXPAtHuS460RxaJ5GsWEfMxaCPlhPgyLgHg5tCIcASBdqWjbUZwG2_-KoKkUAUSth8)
-
-![Image](https://www.visual-paradigm.com/servlet/editor-content/scrum/scrum-sprint-cycle-in-8-steps/sites/7/2018/12/scrum-sprint-cycle.png)
 
 * Work is divided into short cycles (1–4 weeks)
 * Each cycle delivers a usable product increment
@@ -76,37 +73,7 @@ Agile is a **philosophy**, and it is implemented using different **frameworks an
 
 ---
 
-## 2. Extreme Programming (XP)
-
-**XP** focuses heavily on **engineering practices** to improve software quality.
-
-### Key Practices
-
-* Pair Programming
-* Test-Driven Development (TDD)
-* Continuous Integration
-* Simple Design
-* Frequent releases
-
-**Best suited for:** Projects requiring high code quality and frequent changes
-
----
-
-## 3. Kanban
-
-**Kanban** is a **visual workflow management method**.
-
-### Key Features
-
-* Work visualized on a Kanban board
-* Continuous delivery (no fixed sprints)
-* Limits work in progress (WIP)
-
-**Best suited for:** Maintenance and support projects
-
----
-
-## 4. Lean Software Development
+## 2. Lean Software Development
 
 Derived from lean manufacturing principles.
 
@@ -121,26 +88,7 @@ Derived from lean manufacturing principles.
 
 ---
 
-## 5. Crystal Methodology
 
-* Focuses on **people and communication**
-* Different versions based on team size (Crystal Clear, Crystal Orange)
-
-**Best suited for:** Small to medium-sized teams
-
----
-
-## Comparison of Agile Implementations
-
-| Framework | Iterations       | Focus Area             | Best Use Case           |
-| --------- | ---------------- | ---------------------- | ----------------------- |
-| Scrum     | Fixed (Sprints)  | Project management     | New feature development |
-| XP        | Short iterations | Engineering practices  | High-quality code       |
-| Kanban    | Continuous       | Workflow visualization | Support & maintenance   |
-| Lean      | Continuous       | Efficiency             | Process optimization    |
-| Crystal   | Iterative        | People-centric         | Small teams             |
-
----
 
 ## Advantages of Agile
 
