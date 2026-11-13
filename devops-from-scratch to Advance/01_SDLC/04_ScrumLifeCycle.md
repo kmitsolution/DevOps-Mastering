@@ -7,14 +7,6 @@ The Scrum lifecycle shows how work flows from an **idea** to a **potentially shi
 
 ## Scrum Lifecycle Overview
 
-![Image](https://www.pm-partners.com.au/wp-content/uploads/2021/06/blog-scrum-process-opt.jpg)
-
-![Image](https://www.visual-paradigm.com/servlet/editor-content/scrum/scrum-sprint-cycle-in-8-steps/sites/7/2018/12/scrum-sprint-cycle.png)
-
-![Image](https://www.altexsoft.com/media/2018/06/1.png)
-
----
-
 ## Step 1: Product Backlog Creation
 
 * A **Product Backlog** is created by the **Product Owner**
