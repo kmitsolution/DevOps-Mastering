@@ -29,7 +29,8 @@ There are **three main types** of version control systems:
 In **Local Version Control**, versions of files are stored **only on a local machine**.
 Changes are tracked using simple mechanisms like copying files into different folders or using local version databases.
 
-![Image](https://git-scm.com/book/ms/v2/images/local.png)
+<img width="2172" height="724" alt="image" src="https://github.com/user-attachments/assets/4da90fe7-125b-4672-a7c1-899d46d0b4c8" />
+
 
 
 ### Example
@@ -70,7 +71,8 @@ Changes are tracked using simple mechanisms like copying files into different fo
 In **Centralized Version Control**, there is **one central server** that stores all versions of files.
 Developers connect to this server to **checkout**, **update**, and **commit** changes.
 
-![Image](https://miro.medium.com/v2/resize%3Afit%3A1400/1%2AGgaGcwh5L246YcU5NVDA5A.png)
+<img width="2172" height="724" alt="image" src="https://github.com/user-attachments/assets/7c6a0a28-44e9-4cc7-922a-7fb0fbe7fa76" />
+
 
 
 ### Example
@@ -112,7 +114,9 @@ Developers connect to this server to **checkout**, **update**, and **commit** ch
 In **Distributed Version Control**, **every developer has a complete copy** of the repository, including full history.
 Developers can work **offline** and synchronize changes later.
 
-![Image](https://www.edureka.co/blog/wp-content/uploads/2016/11/Distributed-Version-Control-System-Workflow-What-Is-Git-Edureka.png)
+<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/7c6e499a-0145-467f-bb3b-24796f850866" />
+
+
 
 
 ### Example
